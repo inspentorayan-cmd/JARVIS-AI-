@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dolater — Survive. Fight. Win.</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #ff4500;
+    --orange-dim: #cc3600;
+    --gold: #ffaa00;
+    --dark: #0a0a0a;
+    --dark2: #111111;
+    --dark3: #1a1a1a;
+    --card-bg: #141414;
+    --text: #f0ede8;
+    --muted: #888880;
+    --border: rgba(255,69,0,0.2);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--orange);
+    letter-spacing: 3px;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 13px;
+    font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+  .nav-btn {
+    background: var(--orange); color: #fff; border: none;
+    padding: 8px 22px; font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px; font-weight: 700; letter-spacing: 1px;
+    cursor: pointer; text-transform: uppercase;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.2s;
+  }
+  .nav-btn:hover { background: var(--orange-dim); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: var(--dark);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 80px 5% 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 60%, rgba(255,69,0,0.12) 0%, transparent 70%),
+      repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(255,69,0,0.03) 60px, rgba(255,69,0,0.03) 61px),
+      repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,69,0,0.03) 60px, rgba(255,69,0,0.03) 61px);
+  }
+  .hero-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 4px;
+    color: var(--orange); text-transform: uppercase;
+    margin-bottom: 1.5rem; position: relative;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: ''; width: 40px; height: 1px; background: var(--orange); opacity: 0.5;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 14vw, 140px);
+    line-height: 0.9;
+    color: var(--text);
+    position: relative;
+    letter-spacing: 4px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-title span { color: var(--orange); }
+  .hero-sub {
+    font-size: clamp(14px, 2vw, 18px);
+    color: var(--muted); max-width: 520px;
+    margin: 1.5rem auto 2.5rem;
+    line-height: 1.7;
+    animation: fadeUp 0.8s 0.15s ease both;
+    position: relative;
+  }
+  .hero-btns {
+    display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.3s ease both; position: relative;
+  }
+  .btn-fire {
+    background: var(--orange); color: #fff;
+    padding: 14px 36px; border: none; cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+    transition: background 0.2s, transform 0.1s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-fire:hover { background: var(--orange-dim); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    padding: 13px 36px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    transition: border-color 0.2s, transform 0.1s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-2px); }
+  .hero-stats {
+    display: flex; gap: 48px; justify-content: center; flex-wrap: wrap;
+    margin-top: 4rem; position: relative;
+    border-top: 1px solid var(--border); padding-top: 2rem;
+    animation: fadeUp 0.8s 0.45s ease both;
+  }
+  .hero-stat-num {
+    font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--orange); letter-spacing: 2px;
+  }
+  .hero-stat-label { font-size: 12px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+
+  /* SECTIONS */
+  section { padding: 100px 5%; }
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 4px;
+    color: var(--orange); text-transform: uppercase; margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(42px, 6vw, 70px);
+    line-height: 1; letter-spacing: 2px; margin-bottom: 1rem;
+  }
+  .section-desc { color: var(--muted); max-width: 520px; line-height: 1.7; margin-bottom: 3rem; }
+
+  /* CHARACTERS */
+  #characters { background: var(--dark2); }
+  .char-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2px;
+  }
+  .char-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+  }
+  .char-card:hover { transform: translateY(-6px); border-color: var(--orange); }
+  .char-art {
+    height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 72px;
+    position: relative;
+    overflow: hidden;
+  }
+  .char-art::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+    background: linear-gradient(transparent, var(--card-bg));
+  }
+  .char-info { padding: 16px; }
+  .char-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; }
+  .char-role {
+    font-size: 11px; font-weight: 600; letter-spacing: 2px;
+    color: var(--orange); text-transform: uppercase; margin-top: 2px;
+  }
+  .char-ability {
+    font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.5;
+  }
+  .char-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: var(--orange); color: #fff;
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    padding: 3px 8px; text-transform: uppercase;
+    clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+  }
+
+  /* WEAPONS */
+  #weapons { background: var(--dark); }
+  .weapon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .weapon-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    padding: 24px; transition: border-color 0.2s, transform 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .weapon-card:hover { border-color: var(--orange); transform: translateY(-3px); }
+  .weapon-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--orange); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .weapon-card:hover::before { transform: scaleX(1); }
+  .weapon-icon { font-size: 42px; margin-bottom: 12px; }
+  .weapon-name { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; }
+  .weapon-type { font-size: 11px; color: var(--orange); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .stat-bar { margin: 8px 0; }
+  .stat-bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--muted); margin-bottom: 4px;
+  }
+  .stat-bar-track {
+    height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;
+  }
+  .stat-bar-fill {
+    height: 100%; background: var(--orange); border-radius: 2px;
+    transition: width 0.8s ease;
+  }
+
+  /* MAPS */
+  #maps { background: var(--dark2); }
+  .maps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .map-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    overflow: hidden; transition: transform 0.2s, border-color 0.2s;
+  }
+  .map-card:hover { transform: translateY(-4px); border-color: var(--orange); }
+  .map-visual {
+    height: 160px; display: flex; align-items: center; justify-content: center;
+    font-size: 64px; position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+  .map-info { padding: 20px; }
+  .map-name { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; }
+  .map-size { font-size: 12px; color: var(--orange); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .map-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .map-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .tag {
+    font-size: 11px; padding: 3px 10px; border: 1px solid var(--border);
+    color: var(--muted); letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  /* NEWS */
+  #news { background: var(--dark); }
+  .news-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+  }
+  .news-main {
+    background: var(--card-bg); border: 1px solid var(--border); padding: 32px;
+    transition: border-color 0.2s;
+  }
+  .news-main:hover { border-color: var(--orange); }
+  .news-side { display: flex; flex-direction: column; gap: 16px; }
+  .news-item {
+    background: var(--card-bg); border: 1px solid var(--border); padding: 20px;
+    transition: border-color 0.2s; cursor: pointer;
+  }
+  .news-item:hover { border-color: var(--orange); }
+  .news-tag {
+    display: inline-block; background: var(--orange); color: #fff;
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    padding: 3px 10px; text-transform: uppercase; margin-bottom: 12px;
+    clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+  }
+  .news-title-main { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 1px; line-height: 1.1; margin-bottom: 12px; }
+  .news-title-sm { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; margin-bottom: 8px; line-height: 1.2; }
+  .news-date { font-size: 12px; color: var(--muted); letter-spacing: 1px; margin-top: 12px; }
+  .news-excerpt { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* DOWNLOAD */
+  #download {
+    background: var(--dark2);
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  #download::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(255,69,0,0.1) 0%, transparent 70%);
+  }
+  .download-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 10vw, 100px);
+    letter-spacing: 3px; line-height: 0.95;
+    position: relative;
+  }
+  .download-title span { color: var(--orange); }
+  .download-sub { font-size: 16px; color: var(--muted); max-width: 480px; margin: 1.5rem auto 2.5rem; position: relative; }
+  .platform-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
+  .platform-btn {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--card-bg); border: 1px solid var(--border);
+    padding: 14px 28px; cursor: pointer; text-decoration: none; color: var(--text);
+    transition: border-color 0.2s, transform 0.1s;
+    min-width: 180px;
+  }
+  .platform-btn:hover { border-color: var(--orange); transform: translateY(-3px); }
+  .platform-icon { font-size: 28px; }
+  .platform-info { text-align: left; }
+  .platform-small { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+  .platform-name { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    padding: 40px 5%;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+  }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--orange); letter-spacing: 3px; }
+  .footer-links { display: flex; gap: 24px; list-style: none; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--orange); }
+  .footer-copy { font-size: 12px; color: var(--muted); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* MOBILE NAV */
+  .nav-hamburger { display: none; background: none; border: none; color: var(--text); font-size: 22px; cursor: pointer; }
+  @media (max-width: 700px) {
+    .nav-links, .nav-btn { display: none; }
+    .nav-hamburger { display: block; }
+    .news-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">DOLATER</a>
+  <ul class="nav-links">
+    <li><a href="#characters">Characters</a></li>
+    <li><a href="#weapons">Weapons</a></li>
+    <li><a href="#maps">Maps</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#download">Download</a></li>
+  </ul>
+  <button class="nav-btn" onclick="document.getElementById('download').scrollIntoView({behavior:'smooth'})">Play Now</button>
+  <button class="nav-hamburger" onclick="alert('Menu')">&#9776;</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Battle Royale</div>
+  <h1 class="hero-title">DOL<br><span>ATER</span></h1>
+  <p class="hero-sub">50 players drop onto a remote island. Only one walks out. Every second counts. Every bullet matters.</p>
+  <div class="hero-btns">
+    <a href="#download" class="btn-fire">Download Free</a>
+    <a href="#characters" class="btn-outline">Meet Characters</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="hero-stat-num">1B+</div>
+      <div class="hero-stat-label">Downloads</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">150+</div>
+      <div class="hero-stat-label">Countries</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">50</div>
+      <div class="hero-stat-label">Players per match</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">10m</div>
+      <div class="hero-stat-label">Match duration</div>
+    </div>
+  </div>
+</section>
+
+<!-- CHARACTERS -->
+<section id="characters">
+  <div class="section-label">Roster</div>
+  <h2 class="section-title">Choose your fighter</h2>
+  <p class="section-desc">Every character brings a unique ability to the battlefield. Master yours, outlast everyone else.</p>
+  <div class="char-grid reveal">
+    <div class="char-card">
+      <div class="char-badge">Popular</div>
+      <div class="char-art" style="background:#1a0800;">&#128293;</div>
+      <div class="char-info">
+        <div class="char-name">Alok</div>
+        <div class="char-role">Support</div>
+        <div class="char-ability">Creates a 5m aura that increases movement speed and restores HP for allies.</div>
+      </div>
+    </div>
+    <div class="char-card">
+      <div class="char-art" style="background:#001a0a;">&#129354;</div>
+      <div class="char-info">
+        <div class="char-name">Chrono</div>
+        <div class="char-role">Tank</div>
+        <div class="char-ability">Creates a force field that blocks 600 damage from enemies while shooting freely.</div>
+      </div>
+    </div>
+    <div class="char-card">
+      <div class="char-art" style="background:#0a0014;">&#9889;</div>
+      <div class="char-info">
+        <div class="char-name">Skyler</div>
+        <div class="char-role">Assault</div>
+        <div class="char-ability">Unleashes a sonic wave that destroys gloo walls ahead and boosts HP recovery.</div>
+      </div>
+    </div>
+    <div class="char-card">
+      <div class="char-badge">New</div>
+      <div class="char-art" style="background:#14000a;">&#128081;</div>
+      <div class="char-info">
+        <div class="char-name">Thiva</div>
+        <div class="char-role">Medic</div>
+        <div class="char-ability">Speeds up ally rescue by 25% and recovers 40 HP after each successful rescue.</div>
+      </div>
+    </div>
+    <div class="char-card">
+      <div class="char-art" style="background:#001014;">&#127988;</div>
+      <div class="char-info">
+        <div class="char-name">Moco</div>
+        <div class="char-role">Recon</div>
+        <div class="char-ability">Tags enemies hit by her shots, sharing locations with the squad for 5 seconds.</div>
+      </div>
+    </div>
+    <div class="char-card">
+      <div class="char-art" style="background:#100800;">&#128737;</div>
+      <div class="char-info">
+        <div class="char-name">Jota</div>
+        <div class="char-role">Rusher</div>
+        <div class="char-ability">Instantly restores HP when knocking down an enemy with a shotgun or SMG.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEAPONS -->
+<section id="weapons">
+  <div class="section-label">Arsenal</div>
+  <h2 class="section-title">Choose your weapon</h2>
+  <p class="section-desc">From close-range devastation to long-range precision — every weapon has a role in the fight.</p>
+  <div class="weapon-grid reveal">
+    <div class="weapon-card">
+      <div class="weapon-icon">&#128299;</div>
+      <div class="weapon-name">M1887</div>
+      <div class="weapon-type">Shotgun</div>
+      <div class="stat-bar"><div class="stat-bar-label"><span>Damage</span><span>97</span></div><div class="stat-bar-track"><div class="stat-bar-fill" style="width:97%"></div></div></div>
+      <div class="stat-bar"><div class="stat-bar-label"><span>Range</span><span>28</span></div><div class="stat-bar-track"><div class="stat-bar-fill" style="width:28%"></div></div></div>
+      <div class="stat-bar"><div class="stat-bar-label"><span>Fire rate</span><span>42</span></div><div class="stat-bar-track"><div class="stat-bar-fill" style="width:42%"></div></div></div>
+    </div>
+    <div class="weapon-card">
+      <div class="weapon-icon">&#127961;</div>
+      <div class="weapon-name">AK</div>
+      <div class="weapon-type">Assault Rifle</div>
+      <div class="stat-bar"><div class="stat-bar-label"><span>Damage</span><span>78</span></div><div class="stat-bar-track"><div class="stat-bar-fill" style="width:78%"></div></div></div>
+      <div class="stat-bar"><div class="stat-bar-label"><span>Range</span><span>75</span></div><div class="stat-bar-track"><div class="stat-bar-fill" style="width:75%"></div></div></div>
+      <div class="stat-bar"><div class="stat-bar-label"><span>Fire rate</span><span>58</span></div><div class="stat-bar-track"><div class="stat-bar-fill" style="width:58%"></div></div></div>
+    </div>
+    <div class="weapon-card">
+      <div class="weapon-icon">&#128247;</div>
+      <div class="weapon-name">AWM</div>
+      <div class="weapon-type">Sniper Rifle</div>
+      <div class="stat-bar"><div class="stat-bar-label"><span>Damage</span><span>100</span></div><div class="stat-bar-track"><div class="stat-bar-fill" style="width:100%"></div></div></div>
+      <div class="stat-bar"><div class="stat-bar-label"><span>Range</span><span>96</span></div><div class="stat-bar-track"><div class="stat-bar-fill" style="width:96%"></div></div></div>
+      <div class="stat-bar"><div class="stat-bar-label"><span>Fire rate</span><span>18</span></div><div class="stat-bar-track"><div class="stat-bar-fill" style="width:18%"></div></div></div>
+    </div>
+    <div class="weapon-card">
+      <div class="weapon-icon">&#9889;</div>
+      <div class="weapon-name">MP40</div>
+      <div class="weapon-type">SMG</div>
+      <div class="stat-bar"><div class="stat-bar-label"><span>Damage</span><span>48</span></div><div class="stat-bar-track"><div class="stat-bar-fill" style="width:48%"></div></div></div>
+      <div class="stat-bar"><div class="stat-bar-label"><span>Range</span><span>35</span></div><div class="stat-bar-track"><div class="stat-bar-fill" style="width:35%"></div></div></div>
+      <div class="stat-bar"><div class="stat-bar-label"><span>Fire rate</span><span>92</span></div><div class="stat-bar-track"><div class="stat-bar-fill" style="width:92%"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MAPS -->
+<section id="maps">
+  <div class="section-label">Battlegrounds</div>
+  <h2 class="section-title">Pick your map</h2>
+  <p class="section-desc">Each map brings a different terrain, weather, and strategy. Know the land before you land.</p>
+  <div class="maps-grid reveal">
+    <div class="map-card">
+      <div class="map-visual" style="background:#0d1a0d;">&#127965;</div>
+      <div class="map-info">
+        <div class="map-name">Bermuda</div>
+        <div class="map-size">Classic · Large</div>
+        <div class="map-desc">The original island. Tropical terrain with urban clusters, open fields, and coastal zones. The most played map in Free Fire history.</div>
+        <div class="map-tags">
+          <span class="tag">50 players</span>
+          <span class="tag">Tropical</span>
+          <span class="tag">Classic</span>
+        </div>
+      </div>
+    </div>
+    <div class="map-card">
+      <div class="map-visual" style="background:#1a1200;">&#127956;</div>
+      <div class="map-info">
+        <div class="map-name">Kalahari</div>
+        <div class="map-size">Classic · Large</div>
+        <div class="map-desc">Arid desert landscape with ancient ruins, rocky terrain, and long sightlines perfect for snipers.</div>
+        <div class="map-tags">
+          <span class="tag">50 players</span>
+          <span class="tag">Desert</span>
+          <span class="tag">Sniper-friendly</span>
+        </div>
+      </div>
+    </div>
+    <div class="map-card">
+      <div class="map-visual" style="background:#001a1a;">&#127905;</div>
+      <div class="map-info">
+        <div class="map-name">Purgatory</div>
+        <div class="map-size">Classic · Medium</div>
+        <div class="map-desc">A mysterious island with medieval architecture, dense forests, and unpredictable zones. Fast-paced combat guaranteed.</div>
+        <div class="map-tags">
+          <span class="tag">50 players</span>
+          <span class="tag">Mixed terrain</span>
+          <span class="tag">Fast</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section id="news">
+  <div class="section-label">Updates</div>
+  <h2 class="section-title">Latest news</h2>
+  <p class="section-desc">Stay on top of every patch, event, and collab dropping into the battlefield.</p>
+  <div class="news-grid reveal">
+    <div class="news-main">
+      <div class="news-tag">Featured</div>
+      <div class="news-title-main">OB47 Update — New character, map changes &amp; ranked reset</div>
+      <div class="news-excerpt">The latest patch brings sweeping changes to Bermuda's north zone, a brand-new character with a passive healing mechanic, and a full reset of the Clash Squad ranked ladder. New weapon balancing also impacts the AWM and M1887.</div>
+      <div class="news-date">May 2026</div>
+    </div>
+    <div class="news-side">
+      <div class="news-item">
+        <div class="news-tag">Event</div>
+        <div class="news-title-sm">Rampage Season 7 — Limited skins and airdrops</div>
+        <div class="news-date">May 2026</div>
+      </div>
+      <div class="news-item">
+        <div class="news-tag">Esports</div>
+        <div class="news-title-sm">Free Fire World Series 2026 — Qualifiers open</div>
+        <div class="news-date">Apr 2026</div>
+      </div>
+      <div class="news-item">
+        <div class="news-tag">Patch</div>
+        <div class="news-title-sm">Clash Squad balance patch — shotgun nerfs &amp; SMG buffs</div>
+        <div class="news-date">Apr 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section id="download">
+  <div class="section-label">Get the game</div>
+  <h2 class="download-title">DOWNLOAD<br><span>FOR FREE</span></h2>
+  <p class="download-sub">Available on Android and iOS. No PC required. Drop in anywhere, anytime.</p>
+  <div class="platform-btns">
+    <a href="https://play.google.com/store/apps/details?id=com.dts.freefireth" class="platform-btn" target="_blank">
+      <div class="platform-icon">&#9654;</div>
+      <div class="platform-info">
+        <div class="platform-small">Get it on</div>
+        <div class="platform-name">Google Play</div>
+      </div>
+    </a>
+    <a href="https://apps.apple.com/app/garena-free-fire/id1300146617" class="platform-btn" target="_blank">
+      <div class="platform-icon">&#63743;</div>
+      <div class="platform-info">
+        <div class="platform-small">Download on</div>
+        <div class="platform-name">App Store</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">DOLATER</div>
+  <ul class="footer-links">
+    <li><a href="#characters">Characters</a></li>
+    <li><a href="#weapons">Weapons</a></li>
+    <li><a href="#maps">Maps</a></li>
+    <li><a href="#news">News</a></li>
+  </ul>
+  <div class="footer-copy">Dolater — Fan site</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
